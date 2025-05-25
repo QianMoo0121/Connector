@@ -29,6 +29,15 @@ public class ConnectorEarlyLoader {
     // so that it is propagated to the forge error screen.
     private static final List<ModLoadingIssue> LOADING_EXCEPTIONS = new ArrayList<>();
 
+    static {
+        // 添加 PlayerList 类的特殊处理
+        try {
+            Class.forName("net.minecraft.server.players.PlayerList", true, ConnectorEarlyLoader.class.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            LOGGER.warn("PlayerList class not found during early loading", e);
+        }
+    }
+
     /**
      * @param modid the mod id to look up
      * @return whether a mod with the given modid is loaded via Connector
